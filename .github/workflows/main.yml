@@ -2,7 +2,7 @@ name: Build and Push Backend Docker image
 
 on:
   push:
-    branches: [ main ]   
+    branches: [ main ]
 
 jobs:
   build-and-push:
@@ -12,7 +12,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Set up QEMU (for multi-arch - optional)
+      - name: Show folder structure (debug)
+        run: ls -R
+
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
@@ -27,7 +30,7 @@ jobs:
       - name: Build and push backend image
         uses: docker/build-push-action@v4
         with:
-          context: backend
-          file: backend/Dockerfile
+          context: ./backend
+          file: ./backend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-backend:latest
